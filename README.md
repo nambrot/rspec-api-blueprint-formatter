@@ -16,7 +16,7 @@ with simple annotations to your Rspec tests into:
 
 ![image](https://cloud.githubusercontent.com/assets/571810/11172057/0560c5b2-8bcd-11e5-9339-97dc11656fe2.png)
 
-See the full example [here](http://htmlpreview.github.io/?https://raw.githubusercontent.com/nambrot/blueprint-formatter-example-app/master/spec/apispec.html) from the [example app](https://github.com/nambrot/blueprint-formatter-example-app)
+See the full demo [here](http://htmlpreview.github.io/?https://raw.githubusercontent.com/nambrot/blueprint-formatter-example-app/master/spec/apispec.html) from the [example app with RSpec tests](https://github.com/nambrot/blueprint-formatter-example-app)
 
 ## Installation
 
