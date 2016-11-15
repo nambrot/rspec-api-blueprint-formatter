@@ -9,6 +9,7 @@ class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
     super
     @passed_examples = {}
     @group_level = 0
+    RSpec.configuration.silence_filter_announcements = true
   end
 
   def example_started(notification)
