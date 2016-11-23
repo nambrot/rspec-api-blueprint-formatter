@@ -1,7 +1,7 @@
 require 'rspec'
-require 'rspec/core/formatters/base_text_formatter'
+require 'rspec/core/formatters/base_formatter'
 
-class ApiBlueprint < RSpec::Core::Formatters::BaseTextFormatter
+class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
   VERSION = "0.1.0"
   RSpec::Core::Formatters.register self, :example_passed, :example_started, :stop
 
@@ -9,6 +9,7 @@ class ApiBlueprint < RSpec::Core::Formatters::BaseTextFormatter
     super
     @passed_examples = {}
     @group_level = 0
+    RSpec.configuration.silence_filter_announcements = true
   end
 
   def example_started(notification)
