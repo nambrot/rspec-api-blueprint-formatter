@@ -2,7 +2,7 @@ require 'rspec'
 require 'rspec/core/formatters/base_formatter'
 
 class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
-  VERSION = "0.1.0"
+  VERSION = "0.1.1"
   RSpec::Core::Formatters.register self, :example_passed, :example_started, :stop
 
   def initialize(output)
@@ -71,11 +71,11 @@ class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
 
   def print_resource(resource_name, actions)
     unless resource_name =~ /^[^\[\]]*\[\/[^\]]+\]/
-      raise "resoure: '#{resource_name}' is invalid. :resource needs to be specified according to https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#resource-section"
+      raise "resource: '#{resource_name}' is invalid. :resource needs to be specified according to https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#resource-section"
     end
     output.puts "# #{resource_name}"
 
-    http_verbs = actions.keys.map {|action| action.scan(/\[([A-Z]+)\]/).flatten[0] }
+    http_verbs = actions.keys.map {|action| action.scan(/\[([A-Z]+).+\]/).flatten[0] }
 
     unless http_verbs.length == http_verbs.uniq.length
       raise "Action HTTP verbs are not unique #{actions.keys.inspect} for resource: '#{resource_name}'"
@@ -115,7 +115,7 @@ class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
   def description_array_from(example_metadata)
     parent = example_metadata[:parent_example_group] if example_metadata.key?(:parent_example_group)
     parent ||= example_metadata[:example_group] if example_metadata.key?(:example_group)
-    if parent[:action].nil?
+    if parent.nil? || parent[:action].nil?
       []
     else
       [example_metadata[:description]] + description_array_from(parent)
