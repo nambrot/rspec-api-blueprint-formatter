@@ -2,7 +2,7 @@ require 'rspec'
 require 'rspec/core/formatters/base_formatter'
 
 class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
-  VERSION = "0.1.1"
+  VERSION = "0.1.3"
   RSpec::Core::Formatters.register self, :example_passed, :example_started, :stop
 
   def initialize(output)
