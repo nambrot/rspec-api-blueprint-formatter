@@ -1,6 +1,11 @@
 require 'rspec'
 require 'rspec/core/formatters/base_formatter'
 
+require 'api_blueprint/example_formatter'
+
+module ApiBlueprintFormatter
+end
+
 class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
   VERSION = "0.1.3"
   RSpec::Core::Formatters.register self, :example_passed, :example_started, :stop
@@ -94,20 +99,7 @@ class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
   end
 
   def print_example(example_description, example_metadata)
-    output.puts "+ Request #{example_description}\n" \
-      "\n" \
-      "        #{example_metadata[:request][:parameters]}\n" \
-      "        \n" \
-      "        Location: #{example_metadata[:location]}\n" \
-      "        Source code:\n" \
-      "        \n" \
-      "#{indent_lines(8, example_metadata[:source])}\n" \
-      "\n"
-
-    output.puts "+ Response #{example_metadata[:response][:status]} (#{example_metadata[:request][:format]})\n" \
-      "\n" \
-      "        #{example_metadata[:response][:body]}\n" \
-      "\n"
+    output.puts ApiBlueprintFormatter::ExampleFormatter.new(example_description, example_metadata).print
   end
 
   # To include the descriptions of all the contexts that are below the action
@@ -120,12 +112,5 @@ class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
     else
       [example_metadata[:description]] + description_array_from(parent)
     end
-  end
-
-  def indent_lines(number_of_spaces, string)
-    string
-      .split("\n")
-      .map { |a| a.prepend(' ' * number_of_spaces) }
-      .join("\n")
   end
 end
