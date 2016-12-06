@@ -69,7 +69,7 @@ EOF
 
         end
       end
-    end
+     end
   end
 
   describe '#example_description' do

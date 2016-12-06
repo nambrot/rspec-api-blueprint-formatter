@@ -1,14 +1,32 @@
 module ApiBlueprintFormatter
-  class ExampleFormatter
+  # Parses example metadata for Examples (Request+Response) and outputs
+  # markdown in accordance with the API Blueprint spec.
+  #
+  # Specs:
+  #   - https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#def-request-section
+  #   - https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#response-section
+  class ExampleFormatter < BaseFormatter
     attr_reader :example_metadata
 
     def initialize(example_description, example_metadata)
-      @example_description, @example_metadata = example_description, example_metadata
+      @example_description = example_description
+      @example_metadata = example_metadata
     end
 
     def format
       out = ''
-      out << "+ Request #{example_description}\n" \
+      out << format_request
+      out << format_response
+    end
+
+    def example_description
+      sanitize_api_identifier(@example_description)
+    end
+
+    private
+
+    def format_request
+      "+ Request #{example_description}\n" \
       "\n" \
       "        #{example_metadata[:request][:parameters]}\n" \
       "\n" \
@@ -17,24 +35,13 @@ module ApiBlueprintFormatter
       "\n" \
       "#{indent_lines(8, example_metadata[:source])}\n" \
       "\n"
+    end
 
-      out << "+ Response #{example_metadata[:response][:status]} (#{example_metadata[:request][:format]})\n" \
+    def format_response
+      "+ Response #{example_metadata[:response][:status]} (#{example_metadata[:request][:format]})\n" \
       "\n" \
       "        #{example_metadata[:response][:body]}\n" \
       "\n"
-    end
-
-    def example_description
-      @example_description.gsub(/[\[\]]/, '['=>'{', ']'=>'}')
-    end
-
-    private
-
-    def indent_lines(number_of_spaces, string)
-      string
-          .split("\n")
-          .map { |a| a.prepend(' ' * number_of_spaces) }
-          .join("\n")
     end
   end
 end

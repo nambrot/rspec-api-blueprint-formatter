@@ -1,13 +1,12 @@
 require 'rspec'
 require 'rspec/core/formatters/base_formatter'
 
+require 'api_blueprint/version'
+require 'api_blueprint/base_formatter'
 require 'api_blueprint/example_formatter'
-
-module ApiBlueprintFormatter
-end
+require 'api_blueprint/action_formatter'
 
 class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
-  VERSION = "0.1.3"
   RSpec::Core::Formatters.register self, :example_passed, :example_started, :stop
 
   def initialize(output)
@@ -39,6 +38,7 @@ class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
           metadata[:resource] => {
             metadata[:action] => {
               description: metadata[:action_description],
+              parameters: metadata[:action_parameters],
               examples: {
                 description => {
                   request: {
@@ -89,17 +89,14 @@ class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
     actions.each &method(:print_action)
   end
 
-  def print_action(action_name, action_meta_data)
-    output.puts "## #{action_name}\n" \
-                "\n" \
-                "#{action_meta_data[:description]}\n" \
-                "\n" \
+  def print_action(action_name, action_metadata)
+    output.puts ApiBlueprintFormatter::ActionFormatter.new(action_name, action_metadata).format
 
-    action_meta_data[:examples].each &method(:print_example)
+    action_metadata[:examples].each &method(:print_example)
   end
 
   def print_example(example_description, example_metadata)
-    output.puts ApiBlueprintFormatter::ExampleFormatter.new(example_description, example_metadata).print
+    output.puts ApiBlueprintFormatter::ExampleFormatter.new(example_description, example_metadata).format
   end
 
   # To include the descriptions of all the contexts that are below the action
