@@ -80,7 +80,7 @@ class ApiBlueprint < RSpec::Core::Formatters::BaseFormatter
     end
     output.puts "# #{resource_name}"
 
-    http_verbs = actions.keys.map {|action| action.scan(/\[([A-Z]+).+\]/).flatten[0] }
+    http_verbs = actions.keys.map {|action| action.scan(/(GET|HEAD|POST|PATCH|PUT|DELETE|OPTIONS)/).flatten[0] }
 
     unless http_verbs.length == http_verbs.uniq.length
       raise "Action HTTP verbs are not unique #{actions.keys.inspect} for resource: '#{resource_name}'"
