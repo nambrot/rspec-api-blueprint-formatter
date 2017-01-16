@@ -30,11 +30,15 @@ module ApiBlueprintFormatter
       "\n" \
       "        #{example_metadata[:request][:parameters]}\n" \
       "\n" \
-      "        Location: #{example_metadata[:location]}\n" \
+      "        Location: #{format_location}\n" \
       "        Source code:\n" \
       "\n" \
       "#{indent_lines(8, example_metadata[:source])}\n" \
       "\n"
+    end
+
+    def format_location
+      example_metadata[:location].gsub(/:\d+/,'') # remove line numbers from location
     end
 
     def format_response
