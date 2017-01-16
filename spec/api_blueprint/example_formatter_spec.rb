@@ -17,7 +17,7 @@ RSpec.describe ApiBlueprintFormatter::ExampleFormatter do
 
   let(:request_metadata) { { parameters: {}, format: 'application/json' } }
   let(:response_metadata) { { status: 200, body: JSON.generate({a:1, b:2, c:3}) } }
-  let(:location) { "spec/api_blueprint/example_formatter_spec.rb" }
+  let(:location) { "spec/api_blueprint/example_formatter_spec.rb:42" }
   let(:source) { "it 'returns standard APi Blueprint format' do\n  ;\nend" }
 
 
