@@ -117,7 +117,7 @@ Spec:
 ```ruby
 let (:action_parameters) do
   {
-    id: {description: 'Id of a post', type: :number, optional: true}
+    id: {description: 'Id of a post', type: :number, optional: true, example: 1001}
   }
 end
 ```
@@ -136,7 +136,7 @@ Spec:
 ```ruby
 let (:action_parameters) do
   {
-    id: {description: 'Id of a post', type: :number, optional: true, default: 20}
+    id: {description: 'Id of a post', type: :number, optional: true, default: 20, example: 1001}
   }
 end
 ```

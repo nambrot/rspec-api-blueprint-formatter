@@ -60,7 +60,7 @@ module ApiBlueprintFormatter
     end
 
     def action_header(param, data)
-      param_signature = "#{param}#{param_attributes_string(data)}"
+      param_signature = "#{param}#{params_example_string(data)}#{param_attributes_string(data)}"
       multiline_description = !members(param).empty?
 
       header = "+ #{param_signature}"
@@ -73,6 +73,11 @@ module ApiBlueprintFormatter
       param_attributes = [data[:type], optional].compact
 
       " (#{param_attributes.join(', ')})" unless param_attributes.empty?
+    end
+
+    def params_example_string(data)
+      return '' unless data[:example]
+      ": #{data[:example]}"
     end
 
     def members(param)
