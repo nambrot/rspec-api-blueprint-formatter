@@ -75,6 +75,24 @@ RSpec.describe ApiBlueprintFormatter::ActionFormatter do
         end
       end
 
+      context 'descriptive param with: type, optionality and example value' do
+        let(:action_parameters) do
+          {
+            amount: { description: 'Id of a post', type: :number, optional: true, example: 123 }
+          }
+        end
+
+        it do
+          is_expected.to eq <<-EOF
+#{action_header}
+
++ Parameters
+    + amount: 123 (number, optional) - Id of a post
+
+          EOF
+        end
+      end
+
       context 'descriptive param with: type, optionality, default value' do
         let(:action_parameters) do
           {
